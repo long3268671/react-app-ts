@@ -1,22 +1,44 @@
 import React,{ Component } from "react";
-import { BrowserRouter,Route } from "react-router-dom";
+import { BrowserRouter,Route,Switch } from "react-router-dom";
+import './App.css'
 import routers from "./router/index";
 class App extends Component<any,any>{
   render(): React.ReactNode {
     return (
         <BrowserRouter>
+            <Switch>
             {
-                routers.map(router=>{
-                    console.log(router)
+                routers.map((router,index)=>{
                     return (
                         <Route
-                            exact
+                            exact={ router.exact }
+                            key={index}
                             path={router.path}
-                            component = { router.component }
-                        ></Route>
+                            render={ (props)=>{
+                                return (
+                                   <div>
+                                       <router.component { ...props }>
+                                           {
+                                               router.children?.map((item,itemIndex)=>{
+                                                   return (
+                                                       <Route
+                                                           exact={ item.exact }
+                                                           key={itemIndex}
+                                                           path={item.path}
+                                                           component = { item.component }
+                                                       />
+                                                   )
+                                               })
+                                           }
+                                       </router.component>
+                                   </div>
+                                )
+                            } }
+                        />
                     )
                 })
             }
+            </Switch>
         </BrowserRouter>
     )
   }

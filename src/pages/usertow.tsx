@@ -1,11 +1,11 @@
 import React,{ Component } from "react";
-class Home extends Component<any, any>{
+class UserTwo extends Component<any, any>{
     render(): React.ReactNode {
         return (
             <div>
-                这是home页面
+                这是usertow页面 { this.props.match.params.userId}
             </div>
         )
     }
 }
-export default Home
+export default UserTwo
