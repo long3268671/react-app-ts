@@ -1,3 +1,15 @@
 .Body{
   height: 100vh;
+  .logo{
+    height: 64px;
+    color: #fff;
+    text-align: center;
+    line-height: 64px;
+    font-size: 24px;
+  }
+  .menuItem{
+    &:first-child{
+      margin-top: 0;
+    }
+  }
 }

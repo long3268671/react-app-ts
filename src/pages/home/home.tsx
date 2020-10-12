@@ -3,17 +3,20 @@ import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
 } from '@ant-design/icons';
 import React from "react";
+import routers from '../../router/index'
 import './home.scss'
+import SubMenu from "antd/es/menu/SubMenu";
+import {Link} from "react-router-dom";
 
 const { Header, Sider, Content } = Layout;
 
 class Home extends React.Component<any,any> {
     state = {
         collapsed: false,
+        defaultSelectedKeys:['0'],
+        defaultOpenKeys:[]
     };
 
     toggle = () => {
@@ -26,17 +29,43 @@ class Home extends React.Component<any,any> {
         return (
             <Layout className='Body'>
                 <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-                    <div className="logo" />
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                        <Menu.Item key="1" icon={<UserOutlined />}>
-                            nav 1
-                        </Menu.Item>
-                        <Menu.Item key="2" icon={<VideoCameraOutlined />}>
-                            nav 2
-                        </Menu.Item>
-                        <Menu.Item key="3" icon={<UploadOutlined />}>
-                            nav 3
-                        </Menu.Item>
+                    <div className="logo" >LOGO</div>
+                    <Menu
+                        theme="dark"
+                        mode="inline"
+                        defaultSelectedKeys={this.state.defaultSelectedKeys}
+                        defaultOpenKeys={this.state.defaultOpenKeys}
+                    >
+                        {
+
+                            routers.map((router,index)=>{
+                                if(router.hideMenu && router.hideMenu){
+                                    return false
+                                }
+                                if(router.children){
+                                    return (
+                                        <SubMenu key={index} icon={<UserOutlined />} title={router.name}>
+                                            {
+                                                router.children.map((item,itemIndex)=>{
+                                                    return (
+                                                        <Menu.Item key={index + '-' + itemIndex} icon={<UserOutlined />} className='menuItem'>
+                                                            <Link to={item.path} >{ item.name }</Link>
+                                                        </Menu.Item>
+                                                    )
+                                                })
+                                            }
+
+                                        </SubMenu>
+                                    )
+                                }else{
+                                    return (
+                                        <Menu.Item key={index} icon={<UserOutlined />} className='menuItem'>
+                                            <Link to={router.path} >{ router.name }</Link>
+                                        </Menu.Item>
+                                    )
+                                }
+                            })
+                        }
                     </Menu>
                 </Sider>
                 <Layout className="site-layout">
